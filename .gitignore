@@ -1,0 +1,48 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+.DS_Store
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+application-local.yml
+LOG_FILE_IS_UNDEFINED
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+__pycache__
+
+### VS Code ###
+.vscode/
+.erupt/
+aomo/
+/logs/
+/.zero/
+pom.xml.versionsBackup
+/aomo/
+.DS_Store
+/assistant/aomo/
+*zhengyunzhe*
+*mafutian*
+/loghub/LOG_FILE_IS_UNDEFINED
