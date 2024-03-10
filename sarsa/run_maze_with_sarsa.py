@@ -1,11 +1,12 @@
 from envs.maze_env import Maze
 from sarsa import SarsaTable
+from sarsa import SarsaLambdaTable
 
 
 def update():
     for episode in range(100):
         observation = env.reset()
-        print(observation)
+        print(episode)
         action = RL.choose_action(str(observation))
         while True:
             env.render()
@@ -26,7 +27,8 @@ def update():
 
 if __name__ == '__main__':
     env = Maze()
-    RL = SarsaTable(actions=list(range(env.n_actions)))
+    # RL = SarsaTable(actions=list(range(env.n_actions)))
+    RL = SarsaLambdaTable(actions=list(range(env.n_actions)))
 
     env.after(100, update)
     env.mainloop()
