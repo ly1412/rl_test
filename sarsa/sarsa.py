@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-class QLearningTable:
+class SarsaTable:
     def __init__(self, actions, learning_rate=0.01, reward_decay=0.9, e_greedy=0.9):
         self.actions = actions
         self.lr = learning_rate
@@ -22,7 +22,7 @@ class QLearningTable:
         self.check_state_exist(s_)
         q_predict = self.q_table.loc[s, a]
         if s_ != 'terminal':
-            q_target = r + self.gamma * self.q_table.loc[s_, :].max()
+            q_target = r + self.gamma * self.q_table.loc[s_, a]
         else:
             q_target = r
         self.q_table.loc[s, a] += self.lr * (q_target - q_predict)
