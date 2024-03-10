@@ -10,13 +10,15 @@ def update():
         while True:
             env.render()
             observation_, reward, done = env.step(action)
-            RL.learn(str(observation), action, reward, str(observation_))
+            action_ = RL.choose_action(str(observation_))
+            RL.learn(str(observation), action, reward, str(observation_), action_)
             observation = observation_
-            action = RL.choose_action(str(observation))
+            action = action_
+
             if done:
                 break;
         if episode % 10 == 0:
-            print(RL.q_table)
+            print(episode)
 
     print('end of game')
     env.destory()
