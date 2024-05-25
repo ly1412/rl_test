@@ -109,45 +109,45 @@ class DeepQNetwork:
     def _build_net(self):
         self.s = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, self.n_features], name='s')
         self.q_target = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, len(self.n_actions)], name='Q_target')
-        with tf.variable_creator_scope('eval_net'):
+        with tf.compat.v1.variable_scope('eval_net'):
             c_names, n_l1, w_initializer, b_initializer = \
-                ['eval_net_params', tf.Graph.GLOBAL_VARIABLES], 10, \
-                tf.random_normal_initializer(0., 0.3), tf.constant_initializer(0.1)
+                ['eval_net_params', tf.compat.v1.GraphKeys.GLOBAL_VARIABLES], 10, \
+                tf.compat.v1.random_normal_initializer(0, 0.3), tf.compat.v1.constant_initializer(0.1)
 
             # first layer
-            with tf.variable_creator_scope('l1'):
+            with tf.compat.v1.variable_scope('l1'):
                 w1 = tf.compat.v1.get_variable('w1', [self.n_features, n_l1], initializer=w_initializer,
                                                collections=c_names)
                 b1 = tf.compat.v1.get_variable('b1', [1, n_l1], initializer=b_initializer, collections=c_names)
                 l1 = tf.nn.relu(tf.matmul(self.s, w1) + b1)
 
             # second layer
-            with tf.variable_creator_scope('l2'):
-                w2 = tf.variable_creator_scope('w2', [n_l1, self.n_actions], w_initializer=w_initializer,
+            with tf.compat.v1.variable_scope('l2'):
+                w2 = tf.compat.v1.get_variable('w2', [n_l1, len(self.n_actions)], initializer=w_initializer,
                                                collections=c_names)
-                b2 = tf.variable_creator_scope('b2', [1, self.n_actions], b_initializer=b_initializer,
+                b2 = tf.compat.v1.get_variable('b2', [1, len(self.n_actions)], initializer=b_initializer,
                                                collections=c_names)
                 self.q_eval = tf.nn.relu(tf.matmul(l1, w2) + b2)
 
-        with tf.name_scope('loss'):
+        with tf.compat.v1.name_scope('loss'):
             self.loss = tf.reduce_sum(tf.compat.v1.squared_difference(self.q_target, self.q_eval))
-        with tf.name_scope('train'):
+        with tf.compat.v1.name_scope('train'):
             self._train_op = tf.compat.v1.train.RMSPropOptimizer(self.lr).minimize(self.loss)
 
         self.s_ = tf.compat.v1.placeholder(dtype=tf.float32, shape=[None, self.n_features], name='s_')
-        with tf.variable_creator_scope('target_net'):
+        with tf.compat.v1.variable_scope('target_net'):
             c_names = ['target_net_params', tf.compat.v1.GraphKeys.GLOBAL_VARIABLES]
 
-            with tf.variable_creator_scope('l1'):
+            with tf.compat.v1.variable_scope('l1'):
                 w1 = tf.compat.v1.get_variable('w1', [self.n_features, n_l1], initializer=w_initializer,
                                                collections=c_names)
                 b1 = tf.compat.v1.get_variable('b1', [1, n_l1], initializer=b_initializer, collections=c_names)
                 l1 = tf.nn.relu(tf.matmul(self.s, w1) + b1)
 
-            with tf.variable_creator_scope('l2'):
-                w2 = tf.variable_creator_scope('w2', [n_l1, self.n_actions], w_initializer=w_initializer,
+            with tf.compat.v1.variable_scope('l2'):
+                w2 = tf.compat.v1.get_variable('w2', [n_l1, len(self.n_actions)], initializer=w_initializer,
                                                collections=c_names)
-                b2 = tf.variable_creator_scope('b2', [1, self.n_actions], b_initializer=b_initializer,
+                b2 = tf.compat.v1.get_variable('b2', [1, len(self.n_actions)], initializer=b_initializer,
                                                collections=c_names)
                 self.q_next = tf.nn.relu(tf.matmul(l1, w2) + b2)
 
