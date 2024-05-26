@@ -119,7 +119,7 @@ class DeepQNetwork:
                 w1 = tf.compat.v1.get_variable('w1', [self.n_features, n_l1], initializer=w_initializer,
                                                collections=c_names)
                 b1 = tf.compat.v1.get_variable('b1', [1, n_l1], initializer=b_initializer, collections=c_names)
-                l1 = tf.nn.relu(tf.matmul(self.s, w1) + b1)
+                l1 = tf.compat.v1.nn.relu(tf.matmul(self.s, w1) + b1)
 
             # second layer
             with tf.compat.v1.variable_scope('l2'):
@@ -127,10 +127,10 @@ class DeepQNetwork:
                                                collections=c_names)
                 b2 = tf.compat.v1.get_variable('b2', [1, len(self.n_actions)], initializer=b_initializer,
                                                collections=c_names)
-                self.q_eval = tf.nn.relu(tf.matmul(l1, w2) + b2)
+                self.q_eval = tf.compat.v1.nn.relu(tf.matmul(l1, w2) + b2)
 
         with tf.compat.v1.name_scope('loss'):
-            self.loss = tf.reduce_sum(tf.compat.v1.squared_difference(self.q_target, self.q_eval))
+            self.loss = tf.compat.v1.reduce_sum(tf.compat.v1.squared_difference(self.q_target, self.q_eval))
         with tf.compat.v1.name_scope('train'):
             self._train_op = tf.compat.v1.train.RMSPropOptimizer(self.lr).minimize(self.loss)
 
@@ -149,7 +149,7 @@ class DeepQNetwork:
                                                collections=c_names)
                 b2 = tf.compat.v1.get_variable('b2', [1, len(self.n_actions)], initializer=b_initializer,
                                                collections=c_names)
-                self.q_next = tf.nn.relu(tf.matmul(l1, w2) + b2)
+                self.q_next = tf.compat.v1.nn.relu(tf.compat.v1.matmul(l1, w2) + b2)
 
     def plot_cost(self):
         plt.plot(np.arrange(len(self.cost_his)), self.cost_his)
